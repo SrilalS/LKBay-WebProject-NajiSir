@@ -80,7 +80,7 @@ if(isset($_POST['password'])) {
                             
                             
 
-                            if ($emailgot == $Email && $Pws==$pwgot){
+                            if (strtoupper($emailgot) == strtoupper($Email) && $Pws==$pwgot){
 
                                 
                             $_SESSION["N"] = $namegot;
