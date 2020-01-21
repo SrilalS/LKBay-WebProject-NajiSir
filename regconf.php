@@ -26,6 +26,7 @@ session_start();
                     <li class="nav-item" role="presentation"><a class="nav-link" href="catalog.php">All Products</a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link" href="cart.php"><?php
                     
+                        
                     @$pre = $_SESSION["CART"];
                     @$pre = explode(";",$pre);
                     @$pre = count($pre)-1;
