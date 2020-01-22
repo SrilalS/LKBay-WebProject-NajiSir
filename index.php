@@ -76,40 +76,68 @@ session_start();
                 </div>
                 <div class="row justify-content-center">
 
-                <?php
+                                    <?php
 
-                //$lengthJ = file_get_contents('https://firestore.googleapis.com/v1/projects/lkbay-bd5eb/databases/(default)/documents/ITEMS/E/');
-                //$length = json_decode($lengthJ,true);
-                //$LEN = $length['fields']['ITMCNT']['stringValue'];
-                for ($i=1; $i < 3; $i++) { 
-                    
-                    $url = 'https://firestore.googleapis.com/v1/projects/lkbay-bd5eb/databases/(default)/documents/ITEMS/ALL/ITEMS/';
-                    $url .=$i;
-                    $url .='/';
-                    
-                    $json = file_get_contents($url);
-                    $JSONobj = json_decode($json,true);
-                    $price = $JSONobj['fields']['P']['stringValue'];
-                    $name = $JSONobj['fields']['N']['stringValue'];
-                    $desc = $JSONobj['fields']['D']['stringValue'];
-                    $company = $JSONobj['fields']['C']['stringValue'];
-                    $urlX = $JSONobj['fields']['U']['stringValue'];
-                    echo <<<ER
-                    
-                    <div class="col-12 col-md-6 col-lg-4 bg-white">
-                        <div class="shadow clean-product-item">
-                            <div class="image"><a href="./product.php?name=$name&desc=$desc&price=$price&img=$urlX&company=$company"><img class="img-fluid d-block mx-auto" src="$urlX" style="height:160px;width:160px"></a></div>
-                            <div class="product-name"><a href="./product.php?name=$name&desc=$desc&price=$price&img=$i&company=$company">$name</a></div>
-                            <div class="about">
-                                <div class="price">
-                                    <h3>$$price</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    ER;
-                }
-                    ?>
+                                for ($i=1; $i < 4; $i++) { 
+                                    $name;
+                                    $company;
+                                    $price;
+                                    $desc;
+    
+                                    $url = 'https://firestore.googleapis.com/v1/projects/lkbay-bd5eb/databases/(default)/documents/ITEMS/ALL/ITEMS/';
+                                    $url .=$i;
+                                    $url .='/';
+
+                                    
+                                    
+                        
+                                    $json = @file_get_contents($url);
+                                    $JSONobj = json_decode($json,true);
+
+                                    if ($JSONobj == null){
+                                        break;
+                                    }
+
+
+                                    if ($JSONobj !== null && $JSONobj['fields']['DEL']['stringValue']=='0'){
+                                        $price = $JSONobj['fields']['P']['stringValue'];
+                                        $desc = $JSONobj['fields']['D']['stringValue'];
+                                        $name = $JSONobj['fields']['N']['stringValue'];
+                                        $company = $JSONobj['fields']['C']['stringValue'];
+                                        $urlX = $JSONobj['fields']['U']['stringValue'];
+
+                                        //$imgUrl = 'https://firebasestorage.googleapis.com/v0/b/lkbay-bd5eb.appspot.com/o/PIMG%2F';
+                                        //$imgname = $i;
+                                        //$adder = '.jpg?alt=media&token=3cdf607a-9ec7-4f82-8d5b-a5ccf3dcd40f';
+
+                                        //$imgUrl = $imgUrl.$imgname.$adder;
+    
+    
+                                        echo <<< PRD
+                                        
+                                            <div class="col-12 col-md-6 col-lg-4">
+                                                <div class="clean-product-item">
+                                                    <div class="image"><a href="./product.php?name=$name&desc=$desc&price=$price&img=$i&company=$company" ty ><img class="img-fluid d-block mx-auto" src="$urlX" style="height:160px;width:160px"></a></div>
+                                                    <div class="product-name">
+                                                    <a href="./product.php?name=$name&desc=$desc&price=$price&img=$urlX&company=$company">$name</a>
+                                                    </div>
+                                                    <div class="about">
+                                                        <div class="price">
+                                                            <h3>$$price</h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        PRD;
+                                    }
+
+
+                                    
+                                }
+
+                               
+                                ?>
+                
                 </div>
             </div>
         </section>
